@@ -1,0 +1,7 @@
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+.env
+frontend/.env.local
+frontend/node_modules/
+CLAUDE.md
