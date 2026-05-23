@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
+/* ── Tailwind v4 theme — generates bg-*, text-*, border-*, font-* utilities ── */
+@theme {
+  --color-navy:   #050d1a;
+  --color-deep:   #0a1628;
+  --color-mid:    #0f2244;
+  --color-blue:   #1a3a6e;
+  --color-bright: #1e5eff;
+  --color-sky:    #38b4ff;
+  --color-cyan:   #00e5ff;
+  --color-glow:   #4df0ff;
+  --color-pink:   #ff6eb4;
+  --color-yellow: #ffe566;
+  --color-mint:   #5fffc8;
+  --color-white:  #e8f4ff;
+
+  --font-pixel:    var(--font-press-start), monospace;
+  --font-terminal: var(--font-vt323), monospace;
+  --font-body:     var(--font-nunito), sans-serif;
+}
+
+/* ── CSS custom properties (for inline styles / non-Tailwind usage) ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy:   #050d1a;
+  --deep:   #0a1628;
+  --mid:    #0f2244;
+  --blue:   #1a3a6e;
+  --bright: #1e5eff;
+  --sky:    #38b4ff;
+  --cyan:   #00e5ff;
+  --glow:   #4df0ff;
+  --pink:   #ff6eb4;
+  --mint:   #5fffc8;
+  --white:  #e8f4ff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--navy);
+  color: var(--white);
+  font-family: var(--font-body, "Nunito", sans-serif);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-pixel, "Press Start 2P", monospace);
+  color: var(--cyan);
+  text-shadow:
+    0 0 10px var(--cyan),
+    0 0 20px rgba(0, 229, 255, 0.4);
+  line-height: 1.4;
+}
+
+/* ── Scanlines overlay ── */
+#scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { background: var(--deep); }
+::-webkit-scrollbar-thumb  { background: var(--bright); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+* { scrollbar-width: thin; scrollbar-color: var(--bright) var(--deep); }
+
+/* ── Widget card ── */
+.widget {
+  background: var(--deep);
+  border: 1px solid var(--blue);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.widget:hover {
+  border-color: var(--bright);
+  box-shadow:
+    0 0 0 1px rgba(30, 94, 255, 0.3),
+    0 8px 24px rgba(0, 229, 255, 0.08);
+}
+
+/* ── Status dot ── */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1;   box-shadow: 0 0 4px  var(--mint); }
+  50%       { opacity: 0.5; box-shadow: 0 0 10px var(--mint); }
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--mint);
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+/* ── Glow pulse ── */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 6px  var(--cyan), 0 0 12px rgba(0, 229, 255, 0.3); }
+  50%       { box-shadow: 0 0 12px var(--cyan), 0 0 24px rgba(0, 229, 255, 0.6); }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* ── Text selection ── */
+::selection {
+  background: rgba(0, 229, 255, 0.25);
+  color: var(--white);
 }
