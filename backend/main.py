@@ -67,7 +67,7 @@ async def chat(request: ChatRequest):
 
     history = [{
         "role": "system",
-        "content" : "You are a helpful assistant"
+        "content" : "You are a helpful assistant. If the user asks about refunds, complaints, billing issues, or urgent problems — respond with ESCALATE: followed by ONE short sentence explaining why. Do not try to help with the issue. Just escalate immediately"
     }]
 
     # Step 2: Format pass messages for Groq
@@ -94,7 +94,19 @@ async def chat(request: ChatRequest):
         "content": request.message
     }).execute()
 
-    # Step 6: Save AI response to Supabase
+    # Step 6: Check escalation and return
+    if ai_message.startswith("ESCALATE"):   
+        return {
+            "escalated": True,
+            "reason": ai_message.replace("ESCALATE:", "").strip()
+        }
+    else:
+        return {
+            "escalated": False,
+            "ai_message": ai_message
+        }
+
+    # Step 7: Save AI response to Supabase
     supabase.schema("project2").table("messages").insert({
         "conversation_id": request.conversation_id,
         "role": "assistant",
