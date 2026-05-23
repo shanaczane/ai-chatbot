@@ -41,6 +41,7 @@ class ChatRequest(BaseModel):
 def read_root():
     return {"message": "AI Chatbot API is running!"}
 
+# Route for conversations
 @app.post("/conversations")
 def create_conversation():
 
@@ -56,3 +57,52 @@ def create_conversation():
     return {
         "conversation_id": conversation_id
     }
+
+# Route for chat
+@app.post("/chat")
+async def chat(request: ChatRequest):
+
+    # Step 1: Get past messages from Supabase from memory
+    past_messages = supabase.schema("project2").table("messages").select("*").eq("conversation_id", request.conversation_id).execute()
+
+    history = [{
+        "role": "system",
+        "content" : "You are a helpful assistant"
+    }]
+
+    # Step 2: Format pass messages for Groq
+    for messages in past_messages.data:
+        history.append({
+           "role": messages["role"],
+           "content": messages["content"]
+        })
+
+    # Step 3: add new message to the history
+    history.append({
+        "role": "user",
+        "content": request.message
+    })
+
+    # Step 4: Send to ai and save to supabase
+    response = llm.invoke(history)
+    ai_message = response.content
+
+    # Step 5: Save user message to supabase
+    supabase.schema("project2").table("messages").insert({
+        "conversation_id": request.conversation_id,
+        "role": "user",
+        "content": request.message
+    }).execute()
+
+    # Step 6: Save AI response to Supabase
+    supabase.schema("project2").table("messages").insert({
+        "conversation_id": request.conversation_id,
+        "role": "assistant",
+        "content": ai_message
+    }).execute()
+
+    # return
+    return {
+        "ai_message": ai_message
+    }
+
