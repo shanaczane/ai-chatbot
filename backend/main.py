@@ -106,3 +106,14 @@ async def chat(request: ChatRequest):
         "ai_message": ai_message
     }
 
+# Get chat history route
+@app.get("/conversations/{id}")
+def get_conversation(id: str):
+     
+     # Step 1:  Get id from conversation
+     past_messages = supabase.schema("project2").table("messages").select("*").eq("conversation_id", id).execute()
+
+    # Step 2: Return past history data
+     return{
+         "messages": past_messages.data
+     }
