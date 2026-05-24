@@ -94,7 +94,7 @@ export default function ChatPage() {
       <div id="scanlines" />
 
       {/* ── Header ── */}
-      <header className="shrink-0 flex items-center justify-between px-6 py-4 bg-deep border-b border-blue">
+      <header className="shrink-0 flex items-center justify-between px-24 py-4 bg-deep border-b border-blue">
         <div className="flex items-center gap-3">
           <span className="status-dot" />
           <h1 className="text-[0.6rem] tracking-[0.15em]">AI_CHATBOT.exe</h1>
@@ -136,7 +136,7 @@ export default function ChatPage() {
 
         {/* Message list */}
         {messages.length > 0 && (
-          <div className="w-full max-w-2xl px-4 py-6 flex flex-col gap-4">
+          <div className="w-full max-w-2xl mx-auto px-10 py-6 flex flex-col gap-4">
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -148,7 +148,7 @@ export default function ChatPage() {
 
                 {msg.escalated ? (
                   <div
-                    className="rounded-lg px-4 py-3 max-w-sm space-y-1.5"
+                    className="rounded-lg px-6 py-4 max-w-sm space-y-1.5"
                     style={{
                       background: 'rgba(124,45,18,0.2)',
                       border: '1px solid #f97316',
@@ -164,7 +164,7 @@ export default function ChatPage() {
                   </div>
                 ) : (
                   <div
-                    className={`rounded-lg px-4 py-3 max-w-sm bg-deep border transition-all duration-200
+                    className={`rounded-lg px-6 py-4 max-w-sm bg-deep border transition-all duration-200
                       ${msg.role === 'user' ? 'border-sky' : 'border-cyan'}`}
                   >
                     <p className="font-body text-white text-sm leading-relaxed whitespace-pre-wrap">
@@ -196,13 +196,10 @@ export default function ChatPage() {
 
       {/* ── Input footer ── */}
       <footer className="shrink-0 border-t border-blue py-4 flex justify-center">
-        <div className="w-full max-w-2xl px-4">
+        <div className="w-full max-w-2xl mx-auto px-10">
           <div className="flex gap-3">
 
             <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 select-none font-terminal text-cyan text-lg leading-none">
-                &gt;
-              </span>
               <input
                 suppressHydrationWarning
                 type="text"
@@ -211,7 +208,7 @@ export default function ChatPage() {
                 onKeyDown={onKeyDown}
                 disabled={disabled}
                 placeholder="TYPE YOUR MESSAGE..."
-                className="w-full rounded py-3 pl-8 pr-4 font-terminal text-lg text-white
+                className="w-full rounded py-3 pl-4 pr-4 font-terminal text-lg text-white
                            outline-none transition-all duration-200
                            disabled:opacity-40 disabled:cursor-not-allowed"
                 style={{
@@ -233,7 +230,7 @@ export default function ChatPage() {
             <button
               onClick={handleSend}
               disabled={disabled || !input.trim()}
-              className="font-terminal text-lg rounded px-6 py-3 transition-all duration-200
+              className="font-terminal text-lg rounded px-5 py-3 min-w-12 flex items-center justify-center transition-all duration-200
                          disabled:opacity-40 disabled:cursor-not-allowed"
               style={{
                 background: 'var(--bright)',
@@ -255,7 +252,20 @@ export default function ChatPage() {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              SEND
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
             </button>
           </div>
 
