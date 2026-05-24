@@ -67,9 +67,17 @@ async def chat(request: ChatRequest):
 
     history = [{
         "role": "system",
-        "content" : "You are a helpful assistant. If the user asks about refunds, complaints, billing issues, or urgent problems — respond with ESCALATE: followed by ONE short sentence explaining why. Do not try to help with the issue. Just escalate immediately"
+        "content" : """You are a helpful assistant. 
+    Escalate immediately by starting with ESCALATE: if the user:
+    - Asks about refunds or returns
+    - Expresses anger or frustration  
+    - Mentions legal action
+    - Asks to speak to a human
+    - Has billing or payment issues
+    - Reports a safety concern
+    - Uses aggressive language
+"""
     }]
-
     # Step 2: Format pass messages for Groq
     for messages in past_messages.data:
         history.append({
