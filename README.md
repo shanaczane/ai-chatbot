@@ -5,7 +5,7 @@ a session and automatically escalates to a human agent
 when it detects urgent or sensitive issues. 
 
 ## Demo
-![AI Chatbot Screenshot](screenshots/image.png)
+![AI Chatbot Screenshot](demo/demo.gif)
 
 ## How it works
 1. User starts a new chat session
